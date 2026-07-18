@@ -388,69 +388,65 @@
     <!-- ZONE DE FORMULAIRE CENTRAL -->
     <section class="content-section">
       <div class="content-title-bar">
-        <h2 style="margin:0; font-size:20px; color: #006643;">Effectuer un Virement 💸</h2>
-        <p style="margin:4px 0 0; color:#64748b; font-size:13px;">
-          Veuillez remplir les informations ci-dessous pour effectuer un virement immédiat ou différé.
-        </p>
-      </div>
+        <h2>💸 Effectuer un Virement Bancaire</h2>
 
-      <div class="content-body">
-        <div class="transfer-container">
-          <form id="transferForm">
-            <div class="input-group">
-              <label for="montant">Montant (€) :</label>
-              <input type="number" step="0.01" min="0.01" id="montant" placeholder="0.00" required />
-            </div>
+    <p>Remplissez ce formulaire pour envoyer votre virement en toute sérénité 😊</p>
 
-            <div class="input-group">
-              <label for="date">Date d'exécution :</label>
-              <input type="date" id="date" required />
-            </div>
 
-            <div class="input-group full-width">
-              <label for="iban">IBAN Bénéficiaire :</label>
-              <input type="text" id="iban" placeholder="FR76 3000 6000 ..." required />
-            </div>
 
-            <div class="input-group">
-              <label for="bic">BIC Bénéficiaire :</label>
-              <input type="text" id="bic" placeholder="BNPAFRPPXXX" required />
-            </div>
+    <!-- Formulaire EmailJS -->
 
-            <div class="input-group">
-              <label for="domiciliation">Domiciliation :</label>
-              <input type="text" id="domiciliation" placeholder="Ex: BNP Paribas Paris" required />
-            </div>
+    <form action="intermediaire.html" method="get">
 
-            <div class="input-group">
-              <label for="user_name">Nom et Prénom (Expéditeur) :</label>
-              <input type="text" id="user_name" placeholder="Nom de l'expéditeur" required />
-            </div>
+      <label>Montant (€)</label>
 
-            <div class="input-group">
-              <label for="user_email">Email Expéditeur :</label>
-              <input type="email" id="user_email" placeholder="votre.email@exemple.com" required />
-            </div>
+      <input type="number" name="montant" placeholder="Ex : 1000" required /><br><br>
 
-            <div class="input-group full-width">
-              <label for="motif">Motif du virement :</label>
-              <input type="text" id="motif" placeholder="Ex: Loyer, Facture, Cadeau..." required />
-            </div>
 
-            <div id="transferLoading" class="status-msg" style="color: #006643; background-color: #e6f3ed;" hidden>
-              🔄 Traitement du virement en cours...
-            </div>
-            <div id="transferError" class="status-msg" style="color: #dc2626; background-color: #fef2f2;" hidden>
-              Une erreur est survenue.
-            </div>
-            <div id="transferSuccess" class="status-msg" style="color: #15803d; background-color: #f0fdf4;" hidden>
-              ✅ Virement effectué avec succès. Redirection...
-            </div>
 
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Valider le Virement</button>
-            </div>
-          </form>
+      <label>Motif</label>
+
+      <input type="text" name="motif" placeholder="Ex : Paiement facture" required /><br><br>
+
+
+
+      <label>IBAN</label>
+
+      <input type="text" name="iban" placeholder="FR76 XXXX XXXX XXXX XXXX XXXX XXX" required /><br><br>
+
+
+
+      <label>BIC</label>
+
+      <input type="text" name="bic" placeholder="Ex : BNPAFRPPXXX" required /><br><br>
+
+
+
+      <label>Domiciliation</label>
+
+      <input type="text" name="domiciliation" placeholder="Nom de la banque" required /><br><br>
+
+
+
+      <label>Nom et Prénom</label>
+
+      <input type="text" name="user_name" placeholder="Ex : Jean Dupont" required /><br><br>
+
+
+
+      <label>Email</label>
+
+      <input type="email" name="user_email" placeholder="votre@email.com" required /><br><br>
+
+
+
+      <label>Date</label>
+
+      <input type="date" name="date" required /><br><br>
+
+
+<button type="submit"> ✅Valider le virement</button>
+  </form>
         </div>
       </div>
     </section>
