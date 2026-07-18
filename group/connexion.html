@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion</title>
+</head>
+<body>
+
+<form id="login-form">
+  <input type="text" id="clientCode" placeholder="Code Client" required>
+  <input type="password" id="pin" placeholder="PIN" required>
+  <button type="submit">Se connecter</button>
+  <p id="login-error" style="color:red;display:none;"></p>
+</form>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="shared.js"></script>
+
+<script>
+document.getElementById("login-form").addEventListener("submit", async function(e){
+  e.preventDefault();
+
+  const clientCode = document.getElementById("clientCode").value.trim();
+  const pin = document.getElementById("pin").value.trim();
+  const errorMsg = document.getElementById("login-error");
+
+  const users = await getAllUsers();
+  const user = users.find(u => u.clientCode === clientCode && u.pin === pin);
+
+  if(user){
+    localStorage.setItem("currentUserCode", user.clientCode);
+    window.location.href = "dashboard.html";
+  } else {
+    errorMsg.textContent = "Identifiants invalides";
+    errorMsg.style.display = "block";
+  }
+});
+</script>
+
+</body>
+</html>

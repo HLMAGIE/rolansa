@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Simulation site - Tableau de Bord</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="page">
+
+  <!-- ✅ BARRE DU HAUT AVEC NOM UTILISATEUR -->
+  <div class="meta">
+    <span class="lock">🔒 VOUS ÊTES CONNECTÉ</span>
+
+    <button class="btn-logout" type="button" id="userWelcome">
+      Bienvenue Utilisateur...
+    </button>
+
+    <span class="small-links">
+      <a href="#" onclick="logout()">DÉCONNEXION</a>
+    </span>
+  </div>
+
+  <header class="header">
+    <div>
+      <div class="logo">SIMUL BANK<small>MON ESPACE PERSONNEL</small></div>
+    </div>
+    <nav class="tabs" id="mainTabs">
+      <a class="tab active" href="#">Messagerie</a>
+      <a class="tab" href="#">Comptes et services</a>
+      <a class="tab" href="#">Gestion de budget</a>
+      <a class="tab" href="#">Bourse</a>
+      <a class="tab" href="#">Filigrane</a>
+      <a class="tab" href="#">Nos offres et conseils</a>
+    </nav>
+    <div class="search">
+      <input type="search" placeholder="Rechercher"/>
+    </div>
+  </header>
+
+  <div class="main">
+
+    <!-- ✅ MENU LATÉRAL -->
+    <aside class="side">
+      <h4>Vous êtes ici</h4>
+
+      <div class="group">
+        <a class="item" href="profil.html">Mon profil</a>
+        <a class="item active" href="dashboard.html">Consultation</a>
+        <a class="item" href="rib.html">Impression RIB</a>
+      </div>
+
+      <div class="caption">Virements / Prélèvements</div>
+      <div class="group">
+        <a class="item" href="virement.html">Passer un virement</a>
+        <a class="item" href="historique.html">Historique des Opérations</a>
+      </div>
+
+      <div class="caption">Services et contrats</div>
+      <div class="group">
+        <a class="item" href="mes-cartes.html">Mes cartes</a>
+      </div>
+
+      <div class="group admin-link" style="display:none;">
+        <a class="item" href="manage.html">ADMIN (Gestion des Soldes)</a>
+      </div>
+    </aside>
+
+    <!-- ✅ CONTENU PRINCIPAL -->
+    <section class="content">
+
+      <div class="title">Consultation des comptes</div>
+
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Type de Compte</th>
+              <th>Numéro</th>
+              <th>Libellé</th>
+              <th>Solde</th>
+              <th>Relevé</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Compte Courant</td>
+              <td>************<span id="accountSuffix"></span></td>
+              <td>Mon compte principal</td>
+              <td id="currentSolde" class="amount pos"></td>
+              <td>03/2025</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="infos">
+        <h5>Dernière Opération</h5>
+        <div id="lastTransaction">Aucune transaction récente</div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="footnote">
+    Maquette de Simulation - Uniquement une interface et non réel !
+  </div>
+
+</div>
+
+<!-- ✅ FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+<script src="shared.js"></script>
+
+<!-- ✅ LOGIQUE DASHBOARD -->
+<script>
+document.addEventListener("DOMContentLoaded", async () => {
+
+  await getAllUsers();
+  const user = loadCurrentUser();
+
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  // ✅ Affichage du NOM UTILISATEUR EN HAUT
+  document.getElementById("userWelcome").textContent =
+    "Bienvenue M. " + user.name;
+
+  // ✅ Afficher l’ADMIN
+  if (user.isAdmin === true) {
+    document.querySelector(".admin-link").style.display = "block";
+  }
+
+  // ✅ SOLDE
+  document.getElementById("currentSolde").textContent =
+    formatCurrency(user.solde);
+
+  // ✅ NUMÉRO MASQUÉ
+  document.getElementById("accountSuffix").textContent =
+    user.clientCode.slice(-4);
+
+  // ✅ DERNIÈRE TRANSACTION
+  const lastTransactionDiv = document.getElementById("lastTransaction");
+
+  if (user.historique && user.historique.length > 0) {
+    const tx = user.historique[0];
+    const montant = tx.type === "debit" ? -tx.montant : tx.montant;
+    lastTransactionDiv.innerHTML =
+      `${tx.libelle} - ${tx.date} : ${formatCurrency(montant)}`;
+  }
+
+});
+</script>
+
+</body>
+</html>
